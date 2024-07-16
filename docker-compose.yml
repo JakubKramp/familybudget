@@ -1,0 +1,31 @@
+volumes:
+  family_budget_postgres_data: {}
+  family_budget_postgres_data_backups: {}
+
+
+services:
+  django:
+    build:
+      context: .
+      dockerfile: .Dockerfile
+    image: family_budget_django
+    container_name: family_budget_django
+    depends_on:
+      - postgres
+    volumes:
+      - .:/app:z
+    env_file:
+      - ./.envs/.django
+      - ./.envs/.postgres
+    ports:
+      - '8000:8000'
+    command: /start
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: family_budget_local_postgres
+    volumes:
+      - family_budget_postgres_data:/var/lib/postgresql/data
+      - family_budget_postgres_data_backups:/backups
+    env_file:
+      - ./.envs/.postgres
