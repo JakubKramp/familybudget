@@ -7,16 +7,16 @@ services:
   django:
     build:
       context: .
-      dockerfile: .Dockerfile
-    image: family_budget_django
-    container_name: family_budget_django
+      dockerfile: ./compose/local/django/Dockerfile
+    image: family_budget_local_django
+    container_name: family_budget_local_django
     depends_on:
       - postgres
     volumes:
       - .:/app:z
     env_file:
-      - ./.envs/.django
-      - ./.envs/.postgres
+      - ./.envs/.local/.django
+      - ./.envs/.local/.postgres
     ports:
       - '8000:8000'
     command: /start
@@ -28,4 +28,4 @@ services:
       - family_budget_postgres_data:/var/lib/postgresql/data
       - family_budget_postgres_data_backups:/backups
     env_file:
-      - ./.envs/.postgres
+      - ./.envs/.local/.postgres
