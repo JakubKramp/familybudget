@@ -1,11 +1,11 @@
 # TODO
 
 ## Project Infrastructure
-- [ ] Package management
-- [ ] Pre-commit hooks (ruff, isort, etc.)
-- [ ] CI config
-- [ ] Docker (dockerfile, compose)
-- [ ] pyproject.toml (pytest, ruff configuration)
+- [X] Package management
+- [X] Pre-commit hooks (ruff, isort, etc.)
+- [X] CI config
+- [X] Docker (dockerfile, compose)
+- [X] pyproject.toml (pytest, ruff configuration)
 - [ ] comprehensive readme.md
 
 

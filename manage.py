@@ -31,7 +31,7 @@ if __name__ == "__main__":
         raise
 
     # This allows easy placement of apps within the interior
-    # family_budget directory.
+    # familybudget directory.
     current_path = Path(__file__).parent.resolve()
     sys.path.append(str(current_path / "familybudget"))
 

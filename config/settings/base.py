@@ -16,7 +16,7 @@ import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-APPS_DIR = BASE_DIR / "family_budget"
+APPS_DIR = BASE_DIR / "familybudget"
 
 env = environ.Env()
 READ_DOT_ENV_FILE = env.bool("DJANGO_READ_DOT_ENV_FILE", default=False)
@@ -36,6 +36,8 @@ TIME_ZONE = "UTC"
 
 ALLOWED_HOSTS = []
 
+# https://docs.djangoproject.com/en/dev/ref/settings/#site-id
+SITE_ID = 1
 
 # Application definition
 
@@ -51,10 +53,10 @@ DJANGO_APPS = [
     "django.forms",
 ]
 THIRD_PARTY_APPS = [
-    #"allauth",
-    #"allauth.account",
-    #"allauth.mfa",
-    #"allauth.socialaccount",
+    "allauth",
+    "allauth.account",
+    "allauth.mfa",
+    "allauth.socialaccount",
     "rest_framework",
     "rest_framework.authtoken",
     "corsheaders",
@@ -62,7 +64,7 @@ THIRD_PARTY_APPS = [
 ]
 
 LOCAL_APPS = [
-    #"familybudget.users",
+    "familybudget.users",
     #"familybudget.budgets",
     # Your stuff: custom apps go here
 ]
@@ -77,7 +79,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    #"allauth.account.middleware.AccountMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
 ]
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#root-urlconf
@@ -196,7 +198,7 @@ ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 # https://docs.allauth.org/en/latest/account/configuration.html
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 # https://docs.allauth.org/en/latest/account/configuration.html
-ACCOUNT_ADAPTER = "family_budget.users.adapters.AccountAdapter"
+ACCOUNT_ADAPTER = "familybudget.users.adapters.AccountAdapter"
 
 # django-rest-framework
 # -------------------------------------------------------------------------------
@@ -225,3 +227,4 @@ SPECTACULAR_SETTINGS = {
 }
 # Your stuff...
 # ------------------------------------------------------------------------------
+INVITATION_EXPIRE_DAYS = env.int('INVITATION_EXPIRE_DAYS', 3)
