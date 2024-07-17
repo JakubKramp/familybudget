@@ -1,0 +1,8 @@
+# PostgreSQL
+# This is included in VCS for developement purposes
+# ------------------------------------------------------------------------------
+POSTGRES_HOST=postgres
+POSTGRES_PORT=5432
+POSTGRES_DB=family_budget
+POSTGRES_USER=zsKAriikdELJlooMxFwOTMUTrRFVwAZx
+POSTGRES_PASSWORD=IMB2lTTiF7IytigFJADSRPLvTf8oWbehWiCftamG2MvlBWILKJTatyBJ5e1OcVvI

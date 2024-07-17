@@ -1,0 +1,5 @@
+# General
+# This is included in VCS for developement purposes
+# ------------------------------------------------------------------------------
+USE_DOCKER=yes
+IPYTHONDIR=/app/.ipython
