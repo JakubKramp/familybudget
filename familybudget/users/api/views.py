@@ -8,6 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
+from django_filters import rest_framework as filters
 from familybudget.users.models import User, Family, Invitation
 
 from .serializers import UserSerializer, FamilySerializer, ListInvitationsSerializer, InvitationSerializer
@@ -47,6 +48,8 @@ class InvitationViewSet(RetrieveModelMixin, ListModelMixin, UpdateModelMixin, Cr
                           'partial_update': InvitationSerializer,
     }
     queryset = Invitation.objects.all()
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_class = InvitationFilter
     lookup_field = "pk"
 
     def get_serializer_class(self):
