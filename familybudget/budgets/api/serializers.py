@@ -45,7 +45,7 @@ class TransactionSerializer(ListTransactionsSerializer):
                 {'budget': 'Cant create a transaction for a budget you dont have access to'},
                 code='Access denied',
             )
-        if budget.allow_negative_saldo and validated_data.get('transaction_type', 'EX') == 'EX' and budget.saldo < validated_data.get('amount'):
+        if not budget.allow_negative_saldo and validated_data.get('transaction_type', 'EX') == 'EX' and budget.saldo < validated_data.get('amount'):
             raise ValidationError(
                 {'amount': 'This budget does not allow negative saldo'},
                 code='Saldo exceeded',

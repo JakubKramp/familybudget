@@ -36,7 +36,7 @@ class User(AbstractUser):
             str: URL for user detail.
 
         """
-        return reverse("users:detail", kwargs={"pk": self.id})
+        return reverse("api:user-detail", kwargs={"pk": self.id})
 
 
 class Family(models.Model):

@@ -28,7 +28,7 @@ class Budget(models.Model):
     """
     name = models.CharField(max_length=50)
     category = models.ForeignKey(BudgetCategory, null=True, blank=True, on_delete=models.SET_NULL)
-    owner = models.ForeignKey('users.User', blank=True, related_name='managed_budgets', on_delete=models.SET_NULL)
+    owner = models.ForeignKey('users.User', blank=True, null=True, related_name='managed_budgets', on_delete=models.SET_NULL)
     users = models.ManyToManyField('users.User', blank=True, related_name='budgets')
     families = models.ManyToManyField('users.Family', null=True, blank=True, related_name='budgets')
     allow_negative_saldo = models.BooleanField(default=True, help_text='If set to True user can create transactions that will reduce this budgets saldo below 0')

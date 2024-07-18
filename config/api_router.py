@@ -7,7 +7,7 @@ from familybudget.users.api.views import UserViewSet, FamilyViewSet, InvitationV
 
 router = DefaultRouter() if settings.DEBUG else SimpleRouter()
 
-router.register("users", UserViewSet)
+router.register("users", UserViewSet, basename='user')
 router.register("families", FamilyViewSet)
 router.register("invitations", InvitationViewSet)
 router.register("budgets", BudgetViewSet)

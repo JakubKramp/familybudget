@@ -1,11 +1,11 @@
 from collections.abc import Sequence
 from typing import Any
 
-from factory import Faker
+from factory import Faker, SubFactory
 from factory import post_generation
 from factory.django import DjangoModelFactory
 
-from familybudget.users.models import User
+from familybudget.users.models import User, Invitation, Family
 
 
 class UserFactory(DjangoModelFactory):
@@ -38,3 +38,18 @@ class UserFactory(DjangoModelFactory):
     class Meta:
         model = User
         django_get_or_create = ["email"]
+
+
+class FamilyFactory(DjangoModelFactory):
+    family_name = Faker("name")
+
+    class Meta:
+        model = Family
+
+class InvitationFactory(DjangoModelFactory):
+    family = SubFactory(FamilyFactory)
+    sent_by = SubFactory(UserFactory)
+    user = SubFactory(UserFactory)
+
+    class Meta:
+        model = Invitation
