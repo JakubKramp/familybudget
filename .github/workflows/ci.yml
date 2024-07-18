@@ -34,8 +34,6 @@ jobs:
       - name: Run Ruff lint
         run: ruff check .
 
-      - name: Run Isort check
-        run: isort . -c
 
   # With no caching at all the entire ci process takes 3m to complete!
   pytest:
