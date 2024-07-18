@@ -1,7 +1,7 @@
 from django.core.exceptions import ValidationError
 from rest_framework import serializers
 
-from familybudget.users.models import User, Family, Invitation
+from familybudget.users.models import Family, Invitation, User
 
 
 class LightUserSerializer(serializers.ModelSerializer[User]):

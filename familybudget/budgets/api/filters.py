@@ -1,4 +1,5 @@
-from django_filters import rest_framework as filters, RangeFilter
+from django_filters import RangeFilter
+from django_filters import rest_framework as filters
 
 from familybudget.budgets.models import Budget, BudgetCategory, Transaction
 

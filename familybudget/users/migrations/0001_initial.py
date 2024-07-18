@@ -2,9 +2,10 @@
 
 import django.db.models.deletion
 import django.utils.timezone
-import familybudget.users.managers
 from django.conf import settings
 from django.db import migrations, models
+
+import familybudget.users.managers
 
 
 class Migration(migrations.Migration):

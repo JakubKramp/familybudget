@@ -4,7 +4,7 @@ from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
 from django.db import models
-from django.db.models import Sum, Q
+from django.db.models import Q, Sum
 from django.urls import reverse
 from django.utils import timezone
 

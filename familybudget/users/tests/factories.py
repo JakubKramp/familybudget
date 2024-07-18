@@ -1,11 +1,10 @@
 from collections.abc import Sequence
 from typing import Any
 
-from factory import Faker, SubFactory
-from factory import post_generation
+from factory import Faker, SubFactory, post_generation
 from factory.django import DjangoModelFactory
 
-from familybudget.users.models import User, Invitation, Family
+from familybudget.users.models import Family, Invitation, User
 
 
 class UserFactory(DjangoModelFactory):

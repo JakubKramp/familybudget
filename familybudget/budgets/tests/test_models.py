@@ -1,5 +1,6 @@
 import pytest
-from familybudget.users.tests.factories import UserFactory, FamilyFactory
+
+from familybudget.users.tests.factories import FamilyFactory, UserFactory
 
 
 @pytest.mark.django_db()
