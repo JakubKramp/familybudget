@@ -2,6 +2,8 @@ FROM python:3.11-slim-buster
 
 ENV PYTHONUNBUFFERED 1
 
+WORKDIR app
+
 RUN apt-get update && apt-get install --no-install-recommends -y \
   # dependencies for building Python packages
   build-essential \
@@ -10,7 +12,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 
 COPY ./requirements .
 RUN pip install --no-cache-dir -r base.txt
-COPY . .
+COPY . ./app
 
 COPY ./compose/local/django/entrypoint /entrypoint
 RUN sed -i 's/\r$//g' /entrypoint

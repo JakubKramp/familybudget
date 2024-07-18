@@ -1,12 +1,10 @@
-
-
 from typing import ClassVar
 
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
 from django.db import models
-from django.db.models import Sum
+from django.db.models import Sum, Q
 from django.urls import reverse
 from django.utils import timezone
 
@@ -30,8 +28,8 @@ class Budget(models.Model):
     """
     name = models.CharField(max_length=50)
     category = models.ForeignKey(BudgetCategory, null=True, blank=True, on_delete=models.SET_NULL)
-    owner = models.ManyToManyField('users.User', null=True, blank=True, related_name='managed_budgets')
-    users = models.ManyToManyField('users.User', null=True, blank=True, related_name='budgets')
+    owner = models.ForeignKey('users.User', blank=True, related_name='managed_budgets', on_delete=models.SET_NULL)
+    users = models.ManyToManyField('users.User', blank=True, related_name='budgets')
     families = models.ManyToManyField('users.Family', null=True, blank=True, related_name='budgets')
     allow_negative_saldo = models.BooleanField(default=True, help_text='If set to True user can create transactions that will reduce this budgets saldo below 0')
 
@@ -50,7 +48,7 @@ class Budget(models.Model):
 
         users_q = Q(budgets=self)
 
-        families_q = Q(family__budgets=self)
+        families_q = Q(families__budgets=self)
 
         combined_q = owners_q | users_q | families_q
 

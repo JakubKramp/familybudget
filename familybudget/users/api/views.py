@@ -10,6 +10,7 @@ from rest_framework.viewsets import GenericViewSet
 
 from django_filters import rest_framework as filters
 from familybudget.users.models import User, Family, Invitation
+from .filters import InvitationFilter
 
 from .serializers import UserSerializer, FamilySerializer, ListInvitationsSerializer, InvitationSerializer
 
@@ -44,6 +45,7 @@ class InvitationViewSet(RetrieveModelMixin, ListModelMixin, UpdateModelMixin, Cr
     serializer_class = ListInvitationsSerializer
     permission_classes = (IsAuthenticated,)
     serializer_classes = {'retrieve': InvitationSerializer,
+                          'create': InvitationSerializer,
                           'update': InvitationSerializer,
                           'partial_update': InvitationSerializer,
     }

@@ -10,15 +10,16 @@ class ListTransactionsSerializer(serializers.ModelSerializer[Transaction]):
         fields = ['amount', 'transaction_type']
 
 class ListBudgetSerializer(serializers.ModelSerializer[Budget]):
+    category = serializers.CharField(source='category.name')
     class Meta:
         model = Budget
-        fields = ["name", 'saldo', 'category']
+        fields = ["id", "name", 'saldo', 'category']
 
-class BudgetSerializer(ListBudgetSerializer):
-    transactions = ListTransactionsSerializer
+class BudgetSerializer(serializers.ModelSerializer[Budget]):
+    transactions = ListTransactionsSerializer(read_only=True, many=True)
     class Meta:
         model = Budget
-        fields = ListBudgetSerializer.Meta.fields + ["users", "families", "transactions"]
+        fields = ["id", "name", 'saldo', 'category', "users", "families", "transactions"]
 
     def create(self, validated_data):
         budget = super().create(validated_data)
@@ -38,7 +39,7 @@ class TransactionSerializer(ListTransactionsSerializer):
         fields = ListTransactionsSerializer.Meta.fields + ['budget']
 
     def create(self, validated_data):
-        budget = Budget.objects.get(id=validated_data.get('budget'))
+        budget = Budget.objects.get(id=validated_data.get('budget').id)
         if self.context['request'].user not in budget.get_users_with_access():
             raise ValidationError(
                 {'budget': 'Cant create a transaction for a budget you dont have access to'},
@@ -49,4 +50,5 @@ class TransactionSerializer(ListTransactionsSerializer):
                 {'amount': 'This budget does not allow negative saldo'},
                 code='Saldo exceeded',
             )
+        validated_data['author'] = self.context['request'].user
         return super().create(validated_data)

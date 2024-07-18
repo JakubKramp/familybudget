@@ -37,28 +37,36 @@ class ListInvitationsSerializer(serializers.ModelSerializer[Invitation]):
         fields = ['id', 'user', 'sent_by', 'family', 'status']
 
 
-class InvitationSerializer(ListInvitationsSerializer):
+class InvitationSerializer(serializers.ModelSerializer[Invitation]):
+    sent_by = serializers.PrimaryKeyRelatedField(read_only=True, required=False)
     class Meta:
         model = Invitation
-        fields = ListInvitationsSerializer.Meta.fields + ['created_at']
+        fields = ['id', 'user', 'sent_by', 'family', 'status', 'created_at']
 
     def validate(self, data):
-        if self.instance.status != Invitation.Status.PENDING:
-            raise ValidationError(
-                {'status': 'You can only update invitations with `Pending status`'},
-                code='Invitation already responded',
-            )
-        status = data.get('status')
-        if status == Invitation.Status.EXPIRED:
-            raise ValidationError(
-                {'status': 'Expired status can only be set automatically'},
-                code='Invalid status',
-            )
-        if self.context['request'].user != self.instance.sent_by and status == Invitation.Status.CANCELED:
-            raise ValidationError(
-                {'status': 'Only User that sent the invitation cna cancel it'},
-                code='Invalid user',
-            )
+        print(self.instance)
+        if self.instance:
+            if self.instance.status != Invitation.Status.PENDING:
+                raise ValidationError(
+                    {'status': 'You can only update invitations with `Pending status`'},
+                    code='Invitation already responded',
+                )
+            status = data.get('status')
+            if status == Invitation.Status.EXPIRED:
+                raise ValidationError(
+                    {'status': 'Expired status can only be set automatically'},
+                    code='Invalid status',
+                )
+            if self.context['request'].user != self.instance.sent_by and status == Invitation.Status.CANCELED:
+                raise ValidationError(
+                    {'status': 'Only User that sent the invitation cna cancel it'},
+                    code='Invalid user',
+                )
+            if self.context['request'].user != self.instance.user:
+                raise ValidationError(
+                    {'status': 'Only User recieving the invitation can change its status'},
+                    code='Invalid user',
+                )
 
         return data
 
@@ -68,5 +76,16 @@ class InvitationSerializer(ListInvitationsSerializer):
             instance.family.members.add(instance.user)
             instance.family.save()
         return instance
+
+
+    def create(self, validated_data):
+        if validated_data.get('user') == self.context['request'].user.id:
+            raise ValidationError(
+                {'user': 'Cant send invitation to yourself'},
+                code='Invalid user',
+            )
+        validated_data['sent_by'] = self.context['request'].user
+        invitation = super().create(validated_data)
+        return invitation
 
 
