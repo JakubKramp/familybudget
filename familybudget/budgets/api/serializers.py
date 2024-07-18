@@ -1,7 +1,9 @@
 from django.core.exceptions import ValidationError
 from rest_framework import serializers
 
-from familybudget.budgets.models import Budget, BudgetCategory, Transaction
+from familybudget.budgets.models import Budget
+from familybudget.budgets.models import BudgetCategory
+from familybudget.budgets.models import Transaction
 
 
 class ListTransactionsSerializer(serializers.ModelSerializer[Transaction]):
@@ -49,14 +51,14 @@ class BudgetCategorySerializer(serializers.ModelSerializer[BudgetCategory]):
 class TransactionSerializer(ListTransactionsSerializer):
     class Meta:
         model = Transaction
-        fields = ListTransactionsSerializer.Meta.fields + ["budget"]
+        fields = [*ListTransactionsSerializer.Meta.fields, "budget"]
 
     def create(self, validated_data):
         budget = Budget.objects.get(id=validated_data.get("budget").id)
         if self.context["request"].user not in budget.get_users_with_access():
             raise ValidationError(
                 {
-                    "budget": "Cant create a transaction for a budget you dont have access to"
+                    "budget": "Cant create a transaction for a budget you dont have access to",  # noqa: E501
                 },
                 code="Access denied",
             )

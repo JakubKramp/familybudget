@@ -1,7 +1,9 @@
 from django_filters import RangeFilter
 from django_filters import rest_framework as filters
 
-from familybudget.budgets.models import Budget, BudgetCategory, Transaction
+from familybudget.budgets.models import Budget
+from familybudget.budgets.models import BudgetCategory
+from familybudget.budgets.models import Transaction
 
 
 class BudgetFilter(filters.FilterSet):
@@ -22,7 +24,7 @@ class BudgetCategoryFilter(filters.FilterSet):
 
 class TransactionFilter(filters.FilterSet):
     transaction_type = filters.CharFilter(
-        field_name="transaction_type", lookup_expr="iexact"
+        field_name="transaction_type", lookup_expr="iexact",
     )
     amount = RangeFilter()
 

@@ -1,6 +1,7 @@
 import pytest
 
-from familybudget.users.tests.factories import FamilyFactory, UserFactory
+from familybudget.users.tests.factories import FamilyFactory
+from familybudget.users.tests.factories import UserFactory
 
 
 @pytest.mark.django_db()
@@ -14,4 +15,4 @@ def test_users_with_access(positive_budget):
     assert user in positive_budget.get_users_with_access()
     positive_budget.families.add(family)
     assert family_member in positive_budget.get_users_with_access()
-    assert len(positive_budget.get_users_with_access()) == 3
+    assert len(positive_budget.get_users_with_access()) == 3  #noqa: PLR2004

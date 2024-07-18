@@ -1,7 +1,10 @@
-from factory import Faker, SubFactory
+from factory import Faker
+from factory import SubFactory
 from factory.django import DjangoModelFactory
 
-from familybudget.budgets.models import Budget, BudgetCategory, Transaction
+from familybudget.budgets.models import Budget
+from familybudget.budgets.models import BudgetCategory
+from familybudget.budgets.models import Transaction
 from familybudget.users.tests.factories import UserFactory
 
 

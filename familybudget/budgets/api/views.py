@@ -1,19 +1,24 @@
 from django.db.models import Q
 from django_filters import rest_framework as filters
-from rest_framework.mixins import (CreateModelMixin, ListModelMixin,
-                                   RetrieveModelMixin, UpdateModelMixin)
+from rest_framework.mixins import CreateModelMixin
+from rest_framework.mixins import ListModelMixin
+from rest_framework.mixins import RetrieveModelMixin
+from rest_framework.mixins import UpdateModelMixin
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import GenericViewSet
 
-from familybudget.budgets.api.filters import (BudgetCategoryFilter,
-                                              BudgetFilter, TransactionFilter)
+from familybudget.budgets.api.filters import BudgetCategoryFilter
+from familybudget.budgets.api.filters import BudgetFilter
+from familybudget.budgets.api.filters import TransactionFilter
 from familybudget.budgets.api.permissions import IsOwnerOrReadOnly
-from familybudget.budgets.api.serializers import (BudgetCategorySerializer,
-                                                  BudgetSerializer,
-                                                  ListBudgetSerializer,
-                                                  ListTransactionsSerializer,
-                                                  TransactionSerializer)
-from familybudget.budgets.models import Budget, BudgetCategory, Transaction
+from familybudget.budgets.api.serializers import BudgetCategorySerializer
+from familybudget.budgets.api.serializers import BudgetSerializer
+from familybudget.budgets.api.serializers import ListBudgetSerializer
+from familybudget.budgets.api.serializers import ListTransactionsSerializer
+from familybudget.budgets.api.serializers import TransactionSerializer
+from familybudget.budgets.models import Budget
+from familybudget.budgets.models import BudgetCategory
+from familybudget.budgets.models import Transaction
 
 
 class BudgetViewSet(
@@ -39,7 +44,7 @@ class BudgetViewSet(
         return self.queryset.filter(
             Q(users=self.request.user)
             | Q(families__in=self.request.user.families.all())
-            | Q(owner=self.request.user)
+            | Q(owner=self.request.user),
         ).distinct()
 
     def get_serializer_class(self):
@@ -62,7 +67,7 @@ class BudgetCategoryViewSet(
 
 
 class TransactionViewSet(
-    RetrieveModelMixin, ListModelMixin, CreateModelMixin, GenericViewSet
+    RetrieveModelMixin, ListModelMixin, CreateModelMixin, GenericViewSet,
 ):
     serializer_class = TransactionSerializer
     serializer_classes = {

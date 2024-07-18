@@ -1,7 +1,9 @@
 from django.core.exceptions import ValidationError
 from rest_framework import serializers
 
-from familybudget.users.models import Family, Invitation, User
+from familybudget.users.models import Family
+from familybudget.users.models import Invitation
+from familybudget.users.models import User
 
 
 class LightUserSerializer(serializers.ModelSerializer[User]):
@@ -13,7 +15,7 @@ class LightUserSerializer(serializers.ModelSerializer[User]):
 class UserSerializer(LightUserSerializer):
     class Meta:
         model = User
-        fields = LightUserSerializer.Meta.fields + ["url"]
+        fields = [*LightUserSerializer.Meta.fields, "url"]
 
         extra_kwargs = {
             "url": {"view_name": "api:user-detail", "lookup_field": "pk"},
@@ -71,7 +73,7 @@ class InvitationSerializer(serializers.ModelSerializer[Invitation]):
             if self.context["request"].user != self.instance.user:
                 raise ValidationError(
                     {
-                        "status": "Only User recieving the invitation can change its status"
+                        "status": "Only User recieving the invitation can change its status", #noqa: E501
                     },
                     code="Invalid user",
                 )
@@ -92,5 +94,4 @@ class InvitationSerializer(serializers.ModelSerializer[Invitation]):
                 code="Invalid user",
             )
         validated_data["sent_by"] = self.context["request"].user
-        invitation = super().create(validated_data)
-        return invitation
+        return super().create(validated_data)

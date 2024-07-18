@@ -66,18 +66,21 @@ class Invitation(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="invitations")
     family = models.ForeignKey(
-        Family, on_delete=models.CASCADE, related_name="invitations"
+        Family, on_delete=models.CASCADE, related_name="invitations",
     )
     sent_by = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="sent_invitations"
+        User, on_delete=models.CASCADE, related_name="sent_invitations",
     )
     status = models.CharField(
-        max_length=2, choices=Status.choices, default=Status.PENDING
+        max_length=2, choices=Status.choices, default=Status.PENDING,
     )
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         unique_together = ("status", "user", "family")
+
+    def __str__(self) -> str:
+        return f"Invitation to family {self.family.family_name} for {self.user} sent_ by {self.sent_by}"  #noqa: E501
 
     @property
     def is_expired(self) -> bool:
@@ -96,16 +99,13 @@ class Invitation(models.Model):
             self.status = self.Status.EXPIRED
             self.save()
 
-    def __str__(self) -> str:
-        return f"Invitation to family {self.family.family_name} for {self.user} sent_ by {self.sent_by}"
-
     def clean(self):
         super().clean()
         if self.user in self.family.members.all():
-            raise ValidationError(
-                "User cant be invited to family he is already a part of"
+            raise ValidationError(  # noqa: TRY003
+                "User cant be invited to family he is already a part of",  # noqa: EM101
             )
         if self.sent_by not in self.family.members.all():
-            raise ValidationError("User can be invited to a family only by its members")
+            raise ValidationError("User can be invited to a family only by its members")  # noqa: EM101,TRY003
         if self.sent_by == self.user:
-            raise ValidationError("User cant send an invitation to himself")
+            raise ValidationError("User cant send an invitation to himself")  # noqa: EM101,TRY003

@@ -28,7 +28,7 @@ if READ_DOT_ENV_FILE:
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-y56^73%*po9+r=$iafqgoxo@vte@azuene547p!5f8@x4n^r#g"
+SECRET_KEY = "django-insecure-y56^73%*po9+r=$iafqgoxo@vte@azuene547p!5f8@x4n^r#g"  # noqa: S105
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool("DJANGO_DEBUG", False)
@@ -117,7 +117,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",  # noqa: E501
     },
     {
         "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
@@ -209,7 +209,7 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.SessionAuthentication",
         "rest_framework.authentication.TokenAuthentication",
     ),
-    "DEFAULT_PAGINATION_CLASS": "familybudget.users.api.paginators.StandardResultsSetPagination",
+    "DEFAULT_PAGINATION_CLASS": "familybudget.users.api.paginators.StandardResultsSetPagination",  # noqa: E501
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "DEFAULT_FILTER_BACKENDS": ("django_filters.rest_framework.DjangoFilterBackend",),
@@ -220,8 +220,10 @@ CORS_URLS_REGEX = r"^/api/.*$"
 
 FIXTURE_DIRS = "/fixtures/"
 
-# By Default swagger ui is available only to admin user(s). You can change permission classes to change that
-# See more configuration options at https://drf-spectacular.readthedocs.io/en/latest/settings.html#settings
+# By Default swagger ui is available only to admin user(s).
+# You can change permission classes to change that
+# See more configuration options at
+# https://drf-spectacular.readthedocs.io/en/latest/settings.html#settings
 SPECTACULAR_SETTINGS = {
     "TITLE": "family-budget API",
     "DESCRIPTION": "Documentation of API endpoints of family-budget",
