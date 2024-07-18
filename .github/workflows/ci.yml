@@ -27,9 +27,8 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      # Consider using pre-commit.ci for open source project
-      - name: Run pre-commit
-        uses: pre-commit/action@v3.0.1
+      - name: Run Ruff lint
+        run: ruff check .
 
   # With no caching at all the entire ci process takes 3m to complete!
   pytest:
