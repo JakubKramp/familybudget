@@ -1,26 +1,43 @@
-# TODO
+# Family Budget
+The Soop API is built using Django and Django Rest Framework. It provides a comprehensive solution for maintaining and monitoring solar plants.
 
-## Project Infrastructure
-- [X] Package management
-- [X] Pre-commit hooks (ruff, isort, etc.)
-- [X] CI config
-- [X] Docker (dockerfile, compose)
-- [X] pyproject.toml (pytest, ruff configuration)
-- [ ] comprehensive readme.md
+## Prerequisites
 
+Before you begin, ensure you have met the following requirements:
 
-## Users and authorization
-- [ ] Models (Users, Groups, Invitations)
-- [ ] Users can invite other users to their groups (famlies)
-- [ ] Implement simple history to view status of invitations
+- You have installed the latest version of Docker and Docker Compose.
 
 
-## Budgets 
-- [ ] Users can create budgets
-- [ ] Users can grant and revoke access to budgets to individual users and groups
-- [ ] Implement filtering by category, saldo (positive/negative), ordering and pagination
-- [ ] Add calculating saldo as aggregation
+## Local development
 
-## Misc
-- [ ] Tests
-- [ ] Fixtures
+Follow the steps below to get started with local development.
+
+
+#### Build the images:
+
+    $ docker compose -f local.yml build
+
+#### Run the containers:
+
+    $ docker compose -f local.yml up
+
+#### Create superuser:
+
+    $ docker compose -f local.yml run django python manage.py createsuperuser
+
+#### Launch the tests:
+
+    $ docker compose -f local.yml run django pytest . -s
+
+### API documentation with drf-spectacular
+
+This project uses [drf-spectacular](https://drf-spectacular.readthedocs.io/en/latest/) to automatically
+generate API documentation. All the available endpoints are listed at:
+    
+       http://localhost:8000/api/docs/
+
+
+### GitHub Actions
+
+This application uses GitHub Actions to automate the build and deployment process. 
+Check the `.github-ci/workflows/ci.yml` file for more information.
