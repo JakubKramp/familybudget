@@ -44,7 +44,6 @@ class InvitationSerializer(serializers.ModelSerializer[Invitation]):
         fields = ['id', 'user', 'sent_by', 'family', 'status', 'created_at']
 
     def validate(self, data):
-        print(self.instance)
         if self.instance:
             if self.instance.status != Invitation.Status.PENDING:
                 raise ValidationError(

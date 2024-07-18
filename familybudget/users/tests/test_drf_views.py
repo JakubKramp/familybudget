@@ -33,3 +33,18 @@ class TestUserViewSet:
             "id": user.id,
             "url": f"http://testserver/api/users/{user.pk}/",
         }
+
+
+class TestInvitationViewSet:
+
+    def test_update_invitation(self):
+        pass
+
+    def test_update_invitation_wrong_status(self):
+        pass
+
+    def test_cancel_invitation(self):
+        pass
+
+    def test_cancel_invitation_wrong_user(self):
+        pass
