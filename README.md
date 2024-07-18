@@ -1,5 +1,6 @@
 # Family Budget
-The Soop API is built using Django and Django Rest Framework. It provides a comprehensive solution for maintaining and monitoring solar plants.
+
+Recruitment task for Kelton Europe
 
 ## Prerequisites
 
