@@ -8,7 +8,7 @@ from rest_framework.mixins import (
     RetrieveModelMixin,
     UpdateModelMixin,
 )
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
@@ -19,8 +19,15 @@ from .serializers import (
     FamilySerializer,
     InvitationSerializer,
     ListInvitationsSerializer,
+    RegisterUserSerializer,
     UserSerializer,
 )
+
+
+class RegisterViewSet(CreateModelMixin, GenericViewSet):
+    serializer_class = RegisterUserSerializer
+    lookup_field = "pk"
+    permission_classes = (AllowAny,)
 
 
 class UserViewSet(RetrieveModelMixin, ListModelMixin, UpdateModelMixin, GenericViewSet):

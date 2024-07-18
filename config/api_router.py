@@ -6,11 +6,17 @@ from familybudget.budgets.api.views import (
     BudgetViewSet,
     TransactionViewSet,
 )
-from familybudget.users.api.views import FamilyViewSet, InvitationViewSet, UserViewSet
+from familybudget.users.api.views import (
+    FamilyViewSet,
+    InvitationViewSet,
+    RegisterViewSet,
+    UserViewSet,
+)
 
 router = DefaultRouter() if settings.DEBUG else SimpleRouter()
 
 router.register("users", UserViewSet, basename="user")
+router.register("register", RegisterViewSet, basename="register")
 router.register("families", FamilyViewSet)
 router.register("invitations", InvitationViewSet)
 router.register("budgets", BudgetViewSet)

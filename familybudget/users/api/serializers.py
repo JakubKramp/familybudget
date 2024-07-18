@@ -10,6 +10,17 @@ class LightUserSerializer(serializers.ModelSerializer[User]):
         fields = ["name", "id"]
 
 
+class RegisterUserSerializer(serializers.ModelSerializer[User]):
+    password = serializers.CharField(write_only=True)
+    id = serializers.IntegerField(read_only=True)
+    class Meta:
+        model = User
+        fields = ["id", "email", "name", "password"]
+
+    def create(self, validated_data):
+        return  User.objects.create_user(**validated_data)
+
+
 class UserSerializer(LightUserSerializer):
     class Meta:
         model = User
