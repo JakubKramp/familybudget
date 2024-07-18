@@ -43,7 +43,7 @@ jobs:
         run: docker compose -f local.yml build django
 
       - name: Run DB Migrations
-        run: docker compose run -f local.yml --rm django python manage.py migrate
+        run: docker compose -f local.yml run --rm django python manage.py migrate
 
       - name: Run Django Tests
         run: docker compose -f local.yml run django pytest
