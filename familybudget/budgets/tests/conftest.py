@@ -1,8 +1,10 @@
 import pytest
 
-from familybudget.budgets.tests.factories import BudgetFactory
-from familybudget.budgets.tests.factories import ExpenseFactory
-from familybudget.budgets.tests.factories import IncomeFactory
+from familybudget.budgets.tests.factories import (
+    BudgetFactory,
+    ExpenseFactory,
+    IncomeFactory,
+)
 
 
 @pytest.fixture()

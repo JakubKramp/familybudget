@@ -1,9 +1,7 @@
 from django.core.exceptions import ValidationError
 from rest_framework import serializers
 
-from familybudget.budgets.models import Budget
-from familybudget.budgets.models import BudgetCategory
-from familybudget.budgets.models import Transaction
+from familybudget.budgets.models import Budget, BudgetCategory, Transaction
 
 
 class ListTransactionsSerializer(serializers.ModelSerializer[Transaction]):
@@ -36,10 +34,8 @@ class BudgetSerializer(serializers.ModelSerializer[Budget]):
         ]
 
     def create(self, validated_data):
-        budget = super().create(validated_data)
-        budget.owner = self.context["request"].user
-        budget.save()
-        return budget
+        validated_data["owner"] = self.context["request"].user
+        return super().create(validated_data)
 
 
 class BudgetCategorySerializer(serializers.ModelSerializer[BudgetCategory]):
@@ -54,7 +50,7 @@ class TransactionSerializer(ListTransactionsSerializer):
         fields = [*ListTransactionsSerializer.Meta.fields, "budget"]
 
     def create(self, validated_data):
-        budget = Budget.objects.get(id=validated_data.get("budget").id)
+        budget = validated_data["budget"]
         if self.context["request"].user not in budget.get_users_with_access():
             raise ValidationError(
                 {
