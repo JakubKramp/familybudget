@@ -1,13 +1,10 @@
 from django.conf import settings
-from rest_framework.routers import DefaultRouter
-from rest_framework.routers import SimpleRouter
+from rest_framework.routers import DefaultRouter, SimpleRouter
 
-from familybudget.budgets.api.views import BudgetCategoryViewSet
-from familybudget.budgets.api.views import BudgetViewSet
-from familybudget.budgets.api.views import TransactionViewSet
-from familybudget.users.api.views import FamilyViewSet
-from familybudget.users.api.views import InvitationViewSet
-from familybudget.users.api.views import UserViewSet
+from familybudget.budgets.api.views import (BudgetCategoryViewSet,
+                                            BudgetViewSet, TransactionViewSet)
+from familybudget.users.api.views import (FamilyViewSet, InvitationViewSet,
+                                          UserViewSet)
 
 router = DefaultRouter() if settings.DEBUG else SimpleRouter()
 

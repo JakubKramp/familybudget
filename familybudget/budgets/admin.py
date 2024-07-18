@@ -1,8 +1,6 @@
 from django.contrib import admin
 
-from familybudget.budgets.models import Budget
-from familybudget.budgets.models import BudgetCategory
-from familybudget.budgets.models import Transaction
+from familybudget.budgets.models import Budget, BudgetCategory, Transaction
 
 
 @admin.register(BudgetCategory)

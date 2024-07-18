@@ -2,23 +2,17 @@ from django.db.models import Q
 from django_filters import rest_framework as filters
 from rest_framework import status
 from rest_framework.decorators import action
-from rest_framework.mixins import CreateModelMixin
-from rest_framework.mixins import ListModelMixin
-from rest_framework.mixins import RetrieveModelMixin
-from rest_framework.mixins import UpdateModelMixin
+from rest_framework.mixins import (CreateModelMixin, ListModelMixin,
+                                   RetrieveModelMixin, UpdateModelMixin)
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
-from familybudget.users.models import Family
-from familybudget.users.models import Invitation
-from familybudget.users.models import User
+from familybudget.users.models import Family, Invitation, User
 
 from .filters import InvitationFilter
-from .serializers import FamilySerializer
-from .serializers import InvitationSerializer
-from .serializers import ListInvitationsSerializer
-from .serializers import UserSerializer
+from .serializers import (FamilySerializer, InvitationSerializer,
+                          ListInvitationsSerializer, UserSerializer)
 
 
 class UserViewSet(RetrieveModelMixin, ListModelMixin, UpdateModelMixin, GenericViewSet):

@@ -1,9 +1,7 @@
 from django_filters import RangeFilter
 from django_filters import rest_framework as filters
 
-from familybudget.budgets.models import Budget
-from familybudget.budgets.models import BudgetCategory
-from familybudget.budgets.models import Transaction
+from familybudget.budgets.models import Budget, BudgetCategory, Transaction
 
 
 class BudgetFilter(filters.FilterSet):
