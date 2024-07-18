@@ -25,6 +25,12 @@ Follow the steps below to get started with local development.
 
     $ docker compose -f local.yml run django python manage.py createsuperuser
 
+#### Load initial data [optional]:
+
+    $ docker compose -f local.yml run django python manage.py loaddata fixtures/fixtures.json
+
+
+
 #### Launch the tests:
 
     $ docker compose -f local.yml run django pytest . -s
