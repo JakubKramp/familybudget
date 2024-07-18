@@ -46,6 +46,7 @@ class FamilyFactory(DjangoModelFactory):
     class Meta:
         model = Family
 
+
 class InvitationFactory(DjangoModelFactory):
     family = SubFactory(FamilyFactory)
     sent_by = SubFactory(UserFactory)

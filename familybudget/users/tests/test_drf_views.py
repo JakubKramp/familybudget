@@ -36,7 +36,6 @@ class TestUserViewSet:
 
 
 class TestInvitationViewSet:
-
     def test_update_invitation(self):
         pass
 

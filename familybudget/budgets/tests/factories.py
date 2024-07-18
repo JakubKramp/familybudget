@@ -6,13 +6,14 @@ from familybudget.users.tests.factories import UserFactory
 
 
 class BudgetCategoryFactory(DjangoModelFactory):
-    name = Faker('name')
+    name = Faker("name")
 
     class Meta:
         model = BudgetCategory
 
+
 class BudgetFactory(DjangoModelFactory):
-    name = Faker('name')
+    name = Faker("name")
     category = SubFactory(BudgetCategoryFactory)
     owner = SubFactory(UserFactory)
 
@@ -28,6 +29,7 @@ class IncomeFactory(DjangoModelFactory):
 
     class Meta:
         model = Transaction
+
 
 class ExpenseFactory(DjangoModelFactory):
     budget = SubFactory(BudgetFactory)

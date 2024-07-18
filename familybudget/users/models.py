@@ -44,39 +44,55 @@ class Family(models.Model):
     Model for simpler sharing budgets with many people.
     One user can be member of many families (ex. through marriage)
     """
+
     family_name = models.CharField(max_length=50)
-    members = models.ManyToManyField(User, related_name='families')
+    members = models.ManyToManyField(User, related_name="families")
 
     def __str__(self) -> str:
-        return f'Family {self.family_name} with an id of {self.pk}'
+        return f"Family {self.family_name} with an id of {self.pk}"
 
 
 class Invitation(models.Model):
     """
     Model for inviting users to families. Any member of a family can send an invitation.
     """
-    class Status(models.TextChoices):
-        PENDING = 'PE', 'Pending'
-        REFUSED = 'RF', 'Refused'
-        CANCELED = 'CA', 'Canceled'
-        ACCEPTED = 'AC', 'Accepted'
-        EXPIRED = 'EX', 'Expired'
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='invitations')
-    family = models.ForeignKey(Family, on_delete=models.CASCADE, related_name='invitations')
-    sent_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sent_invitations')
-    status = models.CharField(max_length=2, choices=Status.choices, default=Status.PENDING)
+    class Status(models.TextChoices):
+        PENDING = "PE", "Pending"
+        REFUSED = "RF", "Refused"
+        CANCELED = "CA", "Canceled"
+        ACCEPTED = "AC", "Accepted"
+        EXPIRED = "EX", "Expired"
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="invitations")
+    family = models.ForeignKey(
+        Family, on_delete=models.CASCADE, related_name="invitations"
+    )
+    sent_by = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="sent_invitations"
+    )
+    status = models.CharField(
+        max_length=2, choices=Status.choices, default=Status.PENDING
+    )
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        unique_together = ('status', 'user', 'family')
+        unique_together = ("status", "user", "family")
 
     @property
     def is_expired(self) -> bool:
-        return self.status == self.Status.PENDING and (timezone.now()-self.created_at).days > settings.INVITATION_EXPIRE_DAYS
+        return (
+            self.status == self.Status.PENDING
+            and (timezone.now() - self.created_at).days
+            > settings.INVITATION_EXPIRE_DAYS
+        )
 
     def expire(self):
-        if self.status == self.Status.PENDING and (timezone.now()-self.created_at).days > settings.INVITATION_EXPIRE_DAYS:
+        if (
+            self.status == self.Status.PENDING
+            and (timezone.now() - self.created_at).days
+            > settings.INVITATION_EXPIRE_DAYS
+        ):
             self.status = self.Status.EXPIRED
             self.save()
 
@@ -86,8 +102,10 @@ class Invitation(models.Model):
     def clean(self):
         super().clean()
         if self.user in self.family.members.all():
-            raise ValidationError('User cant be invited to family he is already a part of')
+            raise ValidationError(
+                "User cant be invited to family he is already a part of"
+            )
         if self.sent_by not in self.family.members.all():
-            raise ValidationError('User can be invited to a family only by its members')
+            raise ValidationError("User can be invited to a family only by its members")
         if self.sent_by == self.user:
-            raise ValidationError('User cant send an invitation to himself')
+            raise ValidationError("User cant send an invitation to himself")

@@ -52,8 +52,8 @@ class UserAdmin(auth_admin.UserAdmin):
 
 @admin.register(Family)
 class FamilyAdmin(admin.ModelAdmin):
-    list_display = ['family_name', 'members_count']
-    search_fields = ['family_name']
+    list_display = ["family_name", "members_count"]
+    search_fields = ["family_name"]
 
     def members_count(self, obj):
         return obj.members.count()
@@ -61,8 +61,6 @@ class FamilyAdmin(admin.ModelAdmin):
 
 @admin.register(Invitation)
 class InvitationAdmin(admin.ModelAdmin):
-    list_display = ['sent_by', 'family', 'status']
-    search_fields = ['sent_by', 'family', 'user']
-    list_filter = [
-        'family', 'status'
-    ]
+    list_display = ["sent_by", "family", "status"]
+    search_fields = ["sent_by", "family", "user"]
+    list_filter = ["family", "status"]

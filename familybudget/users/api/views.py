@@ -12,7 +12,12 @@ from django_filters import rest_framework as filters
 from familybudget.users.models import User, Family, Invitation
 from .filters import InvitationFilter
 
-from .serializers import UserSerializer, FamilySerializer, ListInvitationsSerializer, InvitationSerializer
+from .serializers import (
+    UserSerializer,
+    FamilySerializer,
+    ListInvitationsSerializer,
+    InvitationSerializer,
+)
 
 
 class UserViewSet(RetrieveModelMixin, ListModelMixin, UpdateModelMixin, GenericViewSet):
@@ -30,7 +35,13 @@ class UserViewSet(RetrieveModelMixin, ListModelMixin, UpdateModelMixin, GenericV
         return Response(status=status.HTTP_200_OK, data=serializer.data)
 
 
-class FamilyViewSet(RetrieveModelMixin, ListModelMixin, UpdateModelMixin, CreateModelMixin, GenericViewSet):
+class FamilyViewSet(
+    RetrieveModelMixin,
+    ListModelMixin,
+    UpdateModelMixin,
+    CreateModelMixin,
+    GenericViewSet,
+):
     serializer_class = FamilySerializer
     permission_classes = (IsAuthenticated,)
     queryset = Family.objects.all()
@@ -41,13 +52,20 @@ class FamilyViewSet(RetrieveModelMixin, ListModelMixin, UpdateModelMixin, Create
         return self.queryset.filter(members=self.request.user)
 
 
-class InvitationViewSet(RetrieveModelMixin, ListModelMixin, UpdateModelMixin, CreateModelMixin, GenericViewSet):
+class InvitationViewSet(
+    RetrieveModelMixin,
+    ListModelMixin,
+    UpdateModelMixin,
+    CreateModelMixin,
+    GenericViewSet,
+):
     serializer_class = ListInvitationsSerializer
     permission_classes = (IsAuthenticated,)
-    serializer_classes = {'retrieve': InvitationSerializer,
-                          'create': InvitationSerializer,
-                          'update': InvitationSerializer,
-                          'partial_update': InvitationSerializer,
+    serializer_classes = {
+        "retrieve": InvitationSerializer,
+        "create": InvitationSerializer,
+        "update": InvitationSerializer,
+        "partial_update": InvitationSerializer,
     }
     queryset = Invitation.objects.all()
     filter_backends = (filters.DjangoFilterBackend,)
@@ -59,5 +77,6 @@ class InvitationViewSet(RetrieveModelMixin, ListModelMixin, UpdateModelMixin, Cr
 
     def get_queryset(self, *args, **kwargs):
         assert isinstance(self.request.user.id, int)
-        return self.queryset.filter(Q(user=self.request.user) | Q(sent_by=self.request.user))
-
+        return self.queryset.filter(
+            Q(user=self.request.user) | Q(sent_by=self.request.user)
+        )
