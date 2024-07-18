@@ -65,18 +65,10 @@ class InvitationSerializer(serializers.ModelSerializer[Invitation]):
                 and status == Invitation.Status.CANCELED
             ):
                 raise ValidationError(
-                    {"status": "Only User that sent the invitation cna cancel it"},
+                    {"status": "Only User that sent the invitation can cancel it"},
                     code="Invalid user",
                 )
-            if self.context["request"].user != self.instance.user:
-                raise ValidationError(
-                    {
-                        "status": "Only User recieving the invitation can change its status", #noqa: E501
-                    },
-                    code="Invalid user",
-                )
-
-        return data
+        return super().validate(data)
 
     def update(self, instance, validated_data):
         instance = super().update(instance, validated_data)
@@ -86,7 +78,7 @@ class InvitationSerializer(serializers.ModelSerializer[Invitation]):
         return instance
 
     def create(self, validated_data):
-        if validated_data.get("user") == self.context["request"].user.id:
+        if validated_data.get("user") == self.context["request"].user:
             raise ValidationError(
                 {"user": "Cant send invitation to yourself"},
                 code="Invalid user",

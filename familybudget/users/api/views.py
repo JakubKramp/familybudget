@@ -27,9 +27,10 @@ class UserViewSet(RetrieveModelMixin, ListModelMixin, UpdateModelMixin, GenericV
     serializer_class = UserSerializer
     queryset = User.objects.all()
     lookup_field = "pk"
+    permission_classes = (IsAuthenticated,)
+
 
     def get_queryset(self, *args, **kwargs):
-        assert isinstance(self.request.user.id, int)
         return self.queryset.filter(id=self.request.user.id)
 
     @action(detail=False)
@@ -51,7 +52,6 @@ class FamilyViewSet(
     lookup_field = "pk"
 
     def get_queryset(self, *args, **kwargs):
-        assert isinstance(self.request.user.id, int)
         return self.queryset.filter(members=self.request.user)
 
 
@@ -79,7 +79,6 @@ class InvitationViewSet(
         return self.serializer_classes.get(self.action, self.serializer_class)
 
     def get_queryset(self, *args, **kwargs):
-        assert isinstance(self.request.user.id, int)
         return self.queryset.filter(
             Q(user=self.request.user) | Q(sent_by=self.request.user),
         )

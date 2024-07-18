@@ -49,8 +49,8 @@ class TransactionSerializer(ListTransactionsSerializer):
         model = Transaction
         fields = [*ListTransactionsSerializer.Meta.fields, "budget"]
 
-    def create(self, validated_data):
-        budget = validated_data["budget"]
+    def validate(self, data):
+        budget = data["budget"]
         if self.context["request"].user not in budget.get_users_with_access():
             raise ValidationError(
                 {
@@ -60,12 +60,16 @@ class TransactionSerializer(ListTransactionsSerializer):
             )
         if (
             not budget.allow_negative_saldo
-            and validated_data.get("transaction_type", "EX") == "EX"
-            and budget.saldo < validated_data.get("amount")
+            and data.get("transaction_type", "EX") == "EX"
+            and budget.saldo < data.get("amount")
         ):
             raise ValidationError(
                 {"amount": "This budget does not allow negative saldo"},
                 code="Saldo exceeded",
             )
+
+        return super().validate(data)
+
+    def create(self, validated_data):
         validated_data["author"] = self.context["request"].user
         return super().create(validated_data)

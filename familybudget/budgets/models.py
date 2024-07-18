@@ -16,6 +16,19 @@ class BudgetCategory(models.Model):
         return f"Budget category {self.name}"
 
 
+class BudgetQuerySet(models.QuerySet):
+    def filter_for_user(self, user_id):
+        owners_q = Q(owner=user_id)
+
+        users_q = Q(users=user_id)
+
+        families_q = Q(families__members=user_id)
+
+        combined_q = owners_q | users_q | families_q
+
+        return self.filter(combined_q).distinct()
+
+
 class Budget(models.Model):
     """
     Model for tracking expenses.
@@ -24,14 +37,12 @@ class Budget(models.Model):
 
     name = models.CharField(max_length=50)
     category = models.ForeignKey(
-        BudgetCategory, null=True, blank=True, on_delete=models.SET_NULL,
+        BudgetCategory, null=True, on_delete=models.SET_NULL,
     )
     owner = models.ForeignKey(
         "users.User",
-        blank=True,
-        null=True,
         related_name="managed_budgets",
-        on_delete=models.SET_NULL,
+        on_delete=models.PROTECT,
     )
     users = models.ManyToManyField("users.User", blank=True, related_name="budgets")
     families = models.ManyToManyField(
@@ -42,6 +53,8 @@ class Budget(models.Model):
         help_text="If set to True user can create transactions"
                   " that will reduce this budgets saldo below 0",
     )
+    objects = BudgetQuerySet.as_manager()
+
 
     def __str__(self) -> str:
         return f"Budget {self.name} with an id of {self.pk}"

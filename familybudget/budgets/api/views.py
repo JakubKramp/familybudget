@@ -1,4 +1,3 @@
-from django.db.models import Q
 from django_filters import rest_framework as filters
 from rest_framework.mixins import (
     CreateModelMixin,
@@ -45,11 +44,7 @@ class BudgetViewSet(
 
     def get_queryset(self, *args, **kwargs):
         assert isinstance(self.request.user.id, int)
-        return self.queryset.filter(
-            Q(users=self.request.user)
-            | Q(families__in=self.request.user.families.all())
-            | Q(owner=self.request.user),
-        ).distinct()
+        return self.queryset.filter_for_user(self.request.user.id)
 
     def get_serializer_class(self):
         return self.serializer_classes.get(self.action, self.serializer_class)
