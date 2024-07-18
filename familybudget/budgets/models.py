@@ -1,6 +1,7 @@
 
 from django.db import models
-from django.db.models import Q, Sum
+from django.db.models import Q
+from django.db.models import Sum
 
 from familybudget.users.models import User
 

@@ -1,7 +1,9 @@
 from django.core.exceptions import ValidationError
 from rest_framework import serializers
 
-from familybudget.budgets.models import Budget, BudgetCategory, Transaction
+from familybudget.budgets.models import Budget
+from familybudget.budgets.models import BudgetCategory
+from familybudget.budgets.models import Transaction
 
 
 class ListTransactionsSerializer(serializers.ModelSerializer[Transaction]):
