@@ -39,7 +39,7 @@ class Budget(models.Model):
     category = models.ForeignKey(
         BudgetCategory, null=True,
         on_delete=models.SET_NULL,
-        related_name="budgets"
+        related_name="budgets",
     )
     owner = models.ForeignKey(
         "users.User",
